@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
 import Script from 'next/script'
-import { FormElement, Input } from '@nextui-org/react'
+import { FormElement, Input, Loading } from '@nextui-org/react'
 import { Text, Card, Grid } from '@nextui-org/react'
 
 const Home: NextPage = () => {
@@ -11,12 +11,15 @@ const Home: NextPage = () => {
   const [data, setData] = useState<any[]>([])
   const [keyword, setKeyword] = useState<string>('Upscale')
   const [type, setType] = useState<string>('Bar')
+  const [loading, setLoading] = useState<boolean>(false)
 
   const nearbySearch = async () => {
+    setLoading(true)
     await fetch(`/api/nearby-search?keyword=${keyword}&type=${type}`)
       .then(res => res.json())
       .then(data => {
         setData(data.data.results)
+        setLoading(false)
       })
   }
 
@@ -29,8 +32,8 @@ const Home: NextPage = () => {
   }
 
   const handleSearch = (ev: React.KeyboardEvent<FormElement>) => {
-    if (ev.key.toLowerCase() == 'enter') {
-      nearbySearch()
+    if (ev.key.toLowerCase() === 'enter') {
+      nearbySearch() 
     }
   }
 
@@ -40,7 +43,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     nearbySearch()
-  }, [nearbySearch])
+  }, [])
 
   return (
     <>
@@ -64,7 +67,7 @@ const Home: NextPage = () => {
             >
               Simple Proximity Search
             </Text>
-            <p className='mt-3'>Enter a keyword and hit enter to search the Manhattan area</p>
+            <p className='mt-3'>Enter a keyword and hit enter to search the Greater NYC area</p>
           </div>
 
           <div>
@@ -72,15 +75,15 @@ const Home: NextPage = () => {
             <Input clearable bordered labelPlaceholder="Type" initialValue="Type" value={type} onChange={handleTypeInput} css={{ alignSelf: 'center', margin: 30 }} />
           </div>
 
-          <div className='my-3 w-100'>
+          {!loading && <div className='my-3 w-100'>
             {data && data.map((v: any, i: number) => (
               <Card bordered shadow={false} hoverable css={{ margin: 10 }} key={i}>
                 <div className='d-md-flex'>
                   <p className='mx-2'>{v.name}</p>
                   <p className='mx-1'>{'$'.repeat(v.price_level)}</p>
                   <div style={{ marginLeft: 'auto' }}>
-                    <select className='form-select' onChange={(ev: any) => handleColorChange(ev, v)}>
-                      <option selected>Select Color</option>
+                    <select className='form-select' defaultValue='select-color' onChange={(ev: any) => handleColorChange(ev, v)}>
+                      <option value='select-color'>Select Color</option>
                       <option value='purple'>Purple</option>
                       <option value='red'>Red</option>
                       <option value='blue'>Blue</option>
@@ -97,7 +100,8 @@ const Home: NextPage = () => {
                 </div>
               </Card>
             ))}
-          </div>
+          </div>}
+          {loading && <Loading type='default' className='my-5' css={{ textAlign: 'center' }} size='lg' />}
         </main>
       </div>
     </>
