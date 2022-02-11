@@ -40,7 +40,7 @@ const Home: NextPage = () => {
 
   useEffect(() => {
     nearbySearch()
-  }, [])
+  }, [nearbySearch])
 
   return (
     <>
@@ -74,7 +74,7 @@ const Home: NextPage = () => {
 
           <div className='my-3 w-100'>
             {data && data.map((v: any, i: number) => (
-              <Card bordered shadow={false} hoverable css={{ margin: 10 }}>
+              <Card bordered shadow={false} hoverable css={{ margin: 10 }} key={i}>
                 <div className='d-md-flex'>
                   <p className='mx-2'>{v.name}</p>
                   <p className='mx-1'>{'$'.repeat(v.price_level)}</p>
@@ -92,7 +92,7 @@ const Home: NextPage = () => {
                 </div>
                 <div className='d-md-flex'>
                   {v.types.map((v: string, index: number) => (
-                    <small className='text-muted mx-1'>{v}</small>
+                    <small className='text-muted mx-1' key={index}>{v}</small>
                   ))}
                 </div>
               </Card>
