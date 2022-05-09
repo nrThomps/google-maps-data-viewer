@@ -5,6 +5,7 @@ import styles from '../styles/Home.module.css'
 import Script from 'next/script'
 import { FormElement, Input, Loading } from '@nextui-org/react'
 import { Text, Card, Grid } from '@nextui-org/react'
+import Link from 'next/link'
 
 const Home: NextPage = () => {
 
@@ -55,6 +56,9 @@ const Home: NextPage = () => {
         </Head>
 
         <main className={styles.main}>
+          <Link href="/color-search">
+            <a>Algorithm Demo</a>
+          </Link>
           <div style={{ textAlign: 'center' }}>
             <Text
               h1

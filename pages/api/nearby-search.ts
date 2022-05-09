@@ -7,7 +7,7 @@ const handler = async (
 ) => {
   const { keyword, type } = req.query
 
-  const URL = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=${keyword}bar&location=40.7591704,-74.0392707&radius=50000&type=${type}&language=en&key=${process.env.MAPS_API_KEY}`
+  const URL = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?keyword=${keyword}&location=40.7591704,-74.0392707&radius=2000&type=${type}&language=en&key=${process.env.MAPS_API_KEY}`
 
   return new Promise((resolve, reject) => {
     Axios
